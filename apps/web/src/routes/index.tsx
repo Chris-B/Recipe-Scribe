@@ -1,0 +1,105 @@
+import React, { useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
+import { useMutation } from "@tanstack/react-query";
+import { normalizeRecipe, updateRecipe } from "@/features/scribe/api/scribe-api";
+import type { MeasurementSystem, Recipe } from "@recipe/shared";
+import { Header } from "@/components/header";
+import { RecipeNotesInput } from "@/features/scribe/components/recipe-notes-input";
+import { QuestionsPrompt } from "@/features/scribe/components/questions-prompt";
+import { RecipeCard } from "@/features/scribe/components/recipe-card";
+
+export const Route = createFileRoute("/")({
+  component: Home,
+});
+
+function Home() {
+  const [notes, setNotes] = useState("");
+  const [system, setSystem] = useState<MeasurementSystem>("US");
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [questionAnswers, setQuestionAnswers] = useState<{ index: number, answer: string }[]>([]);
+
+  const normalize = useMutation({
+    mutationFn: async () => normalizeRecipe(notes, system),
+    onSuccess: (r) => {
+      setRecipe(r);
+      setIsLoading(false);
+    },
+  });
+
+  const update = useMutation({
+    mutationFn: async () => updateRecipe(recipe, questionAnswers),
+    onSuccess: (r) => {
+      setRecipe(r);
+      setIsLoading(false);
+    },
+  });
+
+  const handleNormalize = async () => {
+    if (!notes.trim()) return;
+    setQuestionAnswers([]);
+    setIsLoading(true);
+    normalize.mutate();
+  };
+
+  const handleAnswerQuestion = (index: number, answer: string) => {
+    setQuestionAnswers((prev) => {
+      const existing = prev.find((qa) => qa.index === index);
+      if (existing) {
+        return prev.map((qa) => (qa.index === index ? { ...qa, answer } : qa));
+      }
+      return [...prev, { index, answer }];
+    });
+  };
+
+  const handleSubmitAnswers = () => {
+    if (!recipe) return;
+    setIsLoading(true);
+    setQuestionAnswers([]);
+    update.mutate();
+  };
+
+  const hasUnansweredQuestions = recipe?.questions && recipe.questions.length > 0 && !isLoading;
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header system={system} onSystemChange={setSystem} />
+
+      <main className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+        {/* Hero Section */}
+        <div className="mb-8 text-center">
+          <h1 className="font-serif text-4xl tracking-tight text-foreground sm:text-5xl">
+            Your Kitchen Companion
+          </h1>
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+            Transform your scribbled notes into beautifully structured recipes. Just paste your ideas, and let
+            the magic happen.
+          </p>
+        </div>
+
+        <div className="space-y-8">
+          {/* Notes Input - full width but compact */}
+          <RecipeNotesInput
+            notes={notes}
+            onNotesChange={setNotes}
+            onNormalize={handleNormalize}
+            isLoading={isLoading}
+          />
+
+          {/* Questions Prompt - appears between input and recipe when needed */}
+          {hasUnansweredQuestions && (
+            <QuestionsPrompt
+              questions={recipe.questions!}
+              answers={questionAnswers}
+              onAnswer={handleAnswerQuestion}
+              onSubmit={handleSubmitAnswers}
+            />
+          )}
+
+          {/* Recipe Card - full width, flows naturally */}
+          <RecipeCard recipe={recipe} isLoading={isLoading} />
+        </div>
+      </main>
+    </div>
+  );
+}

@@ -1,0 +1,32 @@
+# dependencies
+node_modules
+
+# builds
+dist
+build
+.out
+coverage
+
+# env
+.env
+.env.local
+.env.*
+
+# OS / IDE
+.DS_Store
+.idea
+.vscode
+
+
+# Tailwind / Vite
+.vite
+
+# logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Playwright
+playwright-report
+test-results
