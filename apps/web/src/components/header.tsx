@@ -1,6 +1,6 @@
 import { ChefHat } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import type { MeasurementSystem } from "@recipe/shared";
+import { MeasurementSystemSchema, type MeasurementSystem } from "@recipe/shared";
 
 interface HeaderProps {
   system: MeasurementSystem;
@@ -23,7 +23,10 @@ export function Header({ system, onSystemChange }: HeaderProps) {
 
         <div className="flex items-center gap-3">
           <span className="text-sm text-muted-foreground hidden sm:inline">Units</span>
-          <Select value={system} onValueChange={(v) => onSystemChange(v as MeasurementSystem)}>
+          <Select
+            value={system as unknown as string}
+            onValueChange={(v) => onSystemChange(MeasurementSystemSchema.parse(v))}
+          >
             <SelectTrigger className="w-[100px]">
               <SelectValue />
             </SelectTrigger>

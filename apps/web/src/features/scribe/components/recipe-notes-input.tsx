@@ -47,7 +47,7 @@ serve over rice..."
           <Button
             onClick={onNormalize}
             disabled={!canNormalize || isLoading}
-            className="gap-2 bg-primary hover:bg-primary/90"
+            className="gap-2 bg-primary hover:bg-primary/90 cursor-pointer"
           >
             <Sparkles className="h-4 w-4" />
             {isLoading ? "Creating..." : "Create Recipe"}

@@ -1,0 +1,103 @@
+services:
+  db:
+    image: postgres:16
+    container_name: recipeai-db
+    environment:
+      POSTGRES_USER: recipe
+      POSTGRES_PASSWORD: recipe
+      POSTGRES_DB: recipe_ai
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U recipe -d recipe_ai"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  deps:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: recipeai-deps
+    working_dir: /app
+    command: >
+      sh -lc "pnpm install --force"
+    environment:
+      PNPM_STORE_DIR: "/pnpm/store"
+    volumes:
+      - ./:/app:cached
+      - pnpm_store:/pnpm/store
+      - node_modules_root:/app/node_modules
+      - node_modules_api:/app/apps/api/node_modules
+      - node_modules_shared:/app/packages/shared/node_modules
+      - node_modules_web:/app/apps/web/node_modules
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: recipeai-api
+    working_dir: /app
+    command: >
+      sh -lc "pnpm -C apps/api dev"
+    env_file:
+      - ./apps/api/.env
+    environment:
+      PNPM_STORE_DIR: "/pnpm/store"
+      OPENAI_API_KEY: "${OPENAI_API_KEY}"
+      DATABASE_URL: "postgresql://recipe:recipe@db:5432/recipe_ai?schema=public"
+      DIRECT_URL: "postgresql://recipe:recipe@db:5432/recipe_ai?schema=public"
+      BETTER_AUTH_SECRET: "${BETTER_AUTH_SECRET}"
+      GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID}"
+      GOOGLE_CLIENT_SECRET: "${GOOGLE_CLIENT_SECRET}"
+    ports:
+      - "8787:8787"
+    volumes:
+      - ./:/app:cached
+      - pnpm_store:/pnpm/store
+      - node_modules_root:/app/node_modules
+      - node_modules_api:/app/apps/api/node_modules
+      - node_modules_shared:/app/packages/shared/node_modules
+      - node_modules_web:/app/apps/web/node_modules
+    depends_on:
+      deps:
+        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: recipeai-web
+    working_dir: /app
+    command: >
+      sh -lc "pnpm -C apps/web dev --host 0.0.0.0 --port 5173"
+    env_file:
+      - ./apps/web/.env
+    environment:
+      PNPM_STORE_DIR: "/pnpm/store"
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./:/app:cached
+      - pnpm_store:/pnpm/store
+      - node_modules_root:/app/node_modules
+      - node_modules_web:/app/apps/web/node_modules
+      - node_modules_shared:/app/packages/shared/node_modules
+      - node_modules_api:/app/apps/api/node_modules
+    depends_on:
+      deps:
+        condition: service_completed_successfully
+      api:
+        condition: service_started
+
+volumes:
+  db_data:
+  pnpm_store:
+  node_modules_root:
+  node_modules_api:
+  node_modules_web:
+  node_modules_shared:

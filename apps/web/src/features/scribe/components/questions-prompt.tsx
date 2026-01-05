@@ -44,7 +44,7 @@ export function QuestionsPrompt({ questions, answers, onAnswer, onSubmit }: Ques
         ))}
 
         <div className="flex justify-end pt-2">
-          <Button onClick={onSubmit} disabled={!allAnswered} size="sm" className="gap-2">
+          <Button onClick={onSubmit} disabled={!allAnswered} size="sm" className="gap-2 cursor-pointer">
             <Send className="h-3.5 w-3.5" />
             Update Recipe
           </Button>

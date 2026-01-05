@@ -1,9 +1,9 @@
-import { RecipeSchema, type Recipe } from "@recipe/shared";
+import { RecipeSchema, type MeasurementSystem, type Recipe } from "@recipe/shared";
 
-const API_BASE = import.meta.env.VITE_API_BASE ?? "http://localhost:8787";
+const API_BASE = import.meta.env.VITE_API_BASE ?? "http://localhost:8787/api/v1";
 
-export async function normalizeRecipe(notes: string, measurementSystem: "US" | "METRIC"): Promise<Recipe> {
-  const res = await fetch(`${API_BASE}/api/normalize`, {
+export async function normalizeRecipe(notes: string, measurementSystem: MeasurementSystem): Promise<Recipe> {
+  const res = await fetch(`${API_BASE}/scribe/normalize`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ notes, measurementSystem }),
@@ -16,7 +16,7 @@ export async function normalizeRecipe(notes: string, measurementSystem: "US" | "
 type QuestionAnswer = { index: number; answer: string };
 
 export async function updateRecipe(recipe: Recipe | null, questionAnswers: QuestionAnswer[]): Promise<Recipe> {
-  const res = await fetch(`${API_BASE}/api/update`, {
+  const res = await fetch(`${API_BASE}/scribe/update`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ recipe, questionAnswers }),

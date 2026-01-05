@@ -4,9 +4,9 @@ import { routeTree } from "./routeTree.gen";
 export const router = createRouter({
   routeTree,
   defaultPreload: "intent",
+  scrollRestoration: true,
 });
 
-// Required for TS inference
 declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;

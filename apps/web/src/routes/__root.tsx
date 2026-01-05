@@ -6,7 +6,7 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <div className="min-h-screen">
+    <div className="font-serif min-h-screen">
       <Outlet />
     </div>
   );
