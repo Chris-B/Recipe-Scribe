@@ -23,7 +23,7 @@ services:
     container_name: recipeai-deps
     working_dir: /app
     command: >
-      sh -lc "pnpm install --force"
+      sh -lc "pnpm install --force && pnpm -C apps/api prisma:generate"
     environment:
       PNPM_STORE_DIR: "/pnpm/store"
     volumes:
