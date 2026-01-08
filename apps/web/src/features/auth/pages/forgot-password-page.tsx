@@ -31,12 +31,13 @@ export function ForgotPasswordPage() {
               setErrorMessage(error.message ?? "Failed to request password reset")
               return
             }
+
+            setIsSubmitted(true)
     
           } catch (err) {
             setErrorMessage(err instanceof Error ? err.message : "Failed to request password reset")
         } finally {
             setIsLoading(false)
-            setIsSubmitted(true)
         }
     }
 
