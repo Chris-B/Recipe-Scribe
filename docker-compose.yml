@@ -41,17 +41,20 @@ services:
     container_name: recipeai-api
     working_dir: /app
     command: >
-      sh -lc "pnpm -C apps/api dev"
+      sh -lc "pnpm -C apps/api prisma:deploy && pnpm -C apps/api dev"
     env_file:
       - ./apps/api/.env
     environment:
       PNPM_STORE_DIR: "/pnpm/store"
+      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_INTERVAL: "250"
       OPENAI_API_KEY: "${OPENAI_API_KEY}"
       DATABASE_URL: "postgresql://recipe:recipe@db:5432/recipe_ai?schema=public"
       DIRECT_URL: "postgresql://recipe:recipe@db:5432/recipe_ai?schema=public"
       BETTER_AUTH_SECRET: "${BETTER_AUTH_SECRET}"
       GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID}"
       GOOGLE_CLIENT_SECRET: "${GOOGLE_CLIENT_SECRET}"
+      RESEND_API_KEY: "${RESEND_API_KEY}"
     ports:
       - "8787:8787"
     volumes:
@@ -79,6 +82,8 @@ services:
       - ./apps/web/.env
     environment:
       PNPM_STORE_DIR: "/pnpm/store"
+      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_INTERVAL: "250"
     ports:
       - "5173:5173"
     volumes:

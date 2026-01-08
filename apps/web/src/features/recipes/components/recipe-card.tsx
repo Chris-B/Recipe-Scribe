@@ -2,7 +2,7 @@ import { Clock, Users, ChefHat, Flame, BookOpen, Sparkles } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import type { Recipe } from "@recipe/shared";
+import type { Recipe, RecipeIngredient, RecipeStep } from "@recipe/shared";
 
 interface RecipeCardProps {
   recipe: Recipe | null;
@@ -80,7 +80,7 @@ export function RecipeCard({ recipe, isLoading }: RecipeCardProps) {
               Ingredients
             </h4>
             <ul className="space-y-2">
-              {recipe.ingredients.map((ing, i) => (
+              {recipe.ingredients.map((ing: RecipeIngredient, i: number) => (
                 <li key={i} className="flex items-start gap-3 py-2 border-b border-border/50 last:border-0">
                   <div className="flex items-center gap-2 flex-1 min-w-0">
                     {ing.inferred && <Sparkles className="h-3 w-3 text-primary shrink-0" />}
@@ -106,8 +106,8 @@ export function RecipeCard({ recipe, isLoading }: RecipeCardProps) {
             <ol className="space-y-4">
               {recipe.steps
                 .slice()
-                .sort((a, b) => a.order - b.order)
-                .map((step) => (
+                .sort((a: RecipeStep, b: RecipeStep) => a.order - b.order)
+                .map((step: RecipeStep) => (
                   <li key={step.order} className="flex gap-4">
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-medium text-primary-foreground">
                       {step.order}

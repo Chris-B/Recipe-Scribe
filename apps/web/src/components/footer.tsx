@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router"
-import { ChefHat } from "lucide-react"
-
+import { Logo } from "@/components/logo"
+  
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-card">
@@ -8,12 +8,7 @@ export function SiteFooter() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link to="/" className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary">
-                <ChefHat className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <span className="font-serif text-xl font-medium text-foreground">Recipe Scribe</span>
-            </Link>
+            <Logo className="scale-75 origin-left"/>
             <p className="mt-4 text-sm text-muted-foreground">
               Transform your handwritten notes into beautifully structured recipes with the power of AI.
             </p>
