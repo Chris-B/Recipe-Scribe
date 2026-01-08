@@ -22,6 +22,8 @@ export const IngredientSchema = z.object({
     .default([]).describe("An array containing the character ranges in the original notes that this ingredient references.")
 });
 
+export type RecipeIngredient = z.infer<typeof IngredientSchema>;
+
 export const StepSchema = z.object({
   order: z.number().int().positive().describe("The order number for this step in the recipe."),
   text: z.string().min(1).describe("The text for this step."),
@@ -32,6 +34,8 @@ export const StepSchema = z.object({
     .array(z.object({ start: z.number().int().nonnegative(), end: z.number().int().nonnegative() }))
     .default([]).describe("An array containing the character ranges in the original notes that this step references.")
 });
+
+export type RecipeStep = z.infer<typeof StepSchema>;
 
 export const RecipeSchema = z.object({
   title: z.string().min(1).describe("The title of the recipe."),

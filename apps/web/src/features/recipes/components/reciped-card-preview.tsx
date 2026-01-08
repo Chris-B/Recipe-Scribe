@@ -2,7 +2,7 @@ import { Clock, Users } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
-interface FeaturedRecipeCardProps {
+interface RecipeCardPreviewProps {
   title: string
   description: string
   image: string
@@ -11,7 +11,7 @@ interface FeaturedRecipeCardProps {
   tags: string[]
 }
 
-export function FeaturedRecipeCard({ title, description, image, time, servings, tags }: FeaturedRecipeCardProps) {
+export function RecipeCardPreview({ title, description, image, time, servings, tags }: RecipeCardPreviewProps) {
   return (
     <Card className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow">
       <div className="aspect-[4/3] overflow-hidden">

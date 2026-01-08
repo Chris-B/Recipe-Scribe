@@ -27,10 +27,33 @@ const AuthController = async (request: FastifyRequest, reply: FastifyReply)=> {
     });
     // Process authentication request
     const response = await auth.handler(req);
+
+    const responseBodyText = response.body ? await response.text() : null;
+
+    if (response.status >= 400) {
+      request.log.warn(
+        {
+          auth: {
+            status: response.status,
+            request: {
+              method: request.method,
+              url: request.url,
+              rawUrl: request.raw.url,
+            },
+            response: {
+              contentType: response.headers.get("content-type"),
+              body: responseBodyText,
+            },
+          },
+        },
+        "Better Auth handler returned error response"
+      );
+    }
+
     // Forward response to client
     reply.status(response.status);
     response.headers.forEach((value, key) => reply.header(key, value));
-    reply.send(response.body ? await response.text() : null);
+    reply.send(responseBodyText);
   } catch (error) {
     request.log.error(error, "Authentication Error:");
     reply.status(500).send({

@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as RecipesScribeRouteImport } from './routes/recipes/scribe'
 import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as AuthSigninRouteImport } from './routes/auth/signin'
+import { Route as AuthResetpasswordRouteImport } from './routes/auth/resetpassword'
 import { Route as AuthForgotpasswordRouteImport } from './routes/auth/forgotpassword'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +36,11 @@ const AuthSigninRoute = AuthSigninRouteImport.update({
   path: '/auth/signin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthResetpasswordRoute = AuthResetpasswordRouteImport.update({
+  id: '/auth/resetpassword',
+  path: '/auth/resetpassword',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthForgotpasswordRoute = AuthForgotpasswordRouteImport.update({
   id: '/auth/forgotpassword',
   path: '/auth/forgotpassword',
@@ -44,6 +50,7 @@ const AuthForgotpasswordRoute = AuthForgotpasswordRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth/forgotpassword': typeof AuthForgotpasswordRoute
+  '/auth/resetpassword': typeof AuthResetpasswordRoute
   '/auth/signin': typeof AuthSigninRoute
   '/auth/signup': typeof AuthSignupRoute
   '/recipes/scribe': typeof RecipesScribeRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth/forgotpassword': typeof AuthForgotpasswordRoute
+  '/auth/resetpassword': typeof AuthResetpasswordRoute
   '/auth/signin': typeof AuthSigninRoute
   '/auth/signup': typeof AuthSignupRoute
   '/recipes/scribe': typeof RecipesScribeRoute
@@ -59,6 +67,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth/forgotpassword': typeof AuthForgotpasswordRoute
+  '/auth/resetpassword': typeof AuthResetpasswordRoute
   '/auth/signin': typeof AuthSigninRoute
   '/auth/signup': typeof AuthSignupRoute
   '/recipes/scribe': typeof RecipesScribeRoute
@@ -68,6 +77,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth/forgotpassword'
+    | '/auth/resetpassword'
     | '/auth/signin'
     | '/auth/signup'
     | '/recipes/scribe'
@@ -75,6 +85,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth/forgotpassword'
+    | '/auth/resetpassword'
     | '/auth/signin'
     | '/auth/signup'
     | '/recipes/scribe'
@@ -82,6 +93,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/auth/forgotpassword'
+    | '/auth/resetpassword'
     | '/auth/signin'
     | '/auth/signup'
     | '/recipes/scribe'
@@ -90,6 +102,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthForgotpasswordRoute: typeof AuthForgotpasswordRoute
+  AuthResetpasswordRoute: typeof AuthResetpasswordRoute
   AuthSigninRoute: typeof AuthSigninRoute
   AuthSignupRoute: typeof AuthSignupRoute
   RecipesScribeRoute: typeof RecipesScribeRoute
@@ -125,6 +138,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSigninRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/resetpassword': {
+      id: '/auth/resetpassword'
+      path: '/auth/resetpassword'
+      fullPath: '/auth/resetpassword'
+      preLoaderRoute: typeof AuthResetpasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/forgotpassword': {
       id: '/auth/forgotpassword'
       path: '/auth/forgotpassword'
@@ -138,6 +158,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthForgotpasswordRoute: AuthForgotpasswordRoute,
+  AuthResetpasswordRoute: AuthResetpasswordRoute,
   AuthSigninRoute: AuthSigninRoute,
   AuthSignupRoute: AuthSignupRoute,
   RecipesScribeRoute: RecipesScribeRoute,
