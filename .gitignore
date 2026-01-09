@@ -17,6 +17,7 @@ coverage
 .idea
 .vscode
 .pnpm-store
+.VSCodeCounter
 
 
 # Tailwind / Vite

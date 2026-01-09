@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router"
 import { authClient } from "@/features/auth/lib/auth-client"
-import { authRedirectSchema } from "@/features/auth/schemas/auth-search-schema"
+import { authRedirectSchema } from "@/features/auth/schemas/auth-search-schemas"
 import { SignUpPage } from "@/features/auth/pages/signup-page"
 
 export const Route = createFileRoute('/auth/signup')({
