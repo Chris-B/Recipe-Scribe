@@ -4,7 +4,7 @@ import { Eye, EyeOff, Check, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { authClient } from "@/features/auth/lib/auth-client"
 
@@ -12,48 +12,46 @@ import { Logo } from "@/components/logo"
 import { GoogleIcon } from "@/features/auth/components/google-icon"
 import { Route } from "@/routes/auth/signup"
 
+import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
+import { authSignupSchema } from '@/features/auth/schemas/auth-form-schemas'
+import { useForm } from '@tanstack/react-form'
+
 export function SignUpPage() {
 
   const navigate = useNavigate()
   const { authRedirect } = Route.useSearch()
 
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
 
-  const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const passwordRequirements = [
-    { label: "At least 8 characters", met: password.length >= 8 },
-    { label: "Contains uppercase letter", met: /[A-Z]/.test(password) },
-    { label: "Contains lowercase letter", met: /[a-z]/.test(password) },
-    { label: "Contains a number", met: /\d/.test(password) },
-  ]
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-
-    try {
-      setErrorMessage(null)
-
-      const { error } = await authClient.signUp.email({ name, email, password })
-
-      if (error) {
-        setErrorMessage(error.message ?? "Failed to create account")
-        return
-      }
-
-      await navigate({ to: authRedirect || "/" })
-
-    } catch (err) {
-      setErrorMessage(err instanceof Error ? err.message : "Failed to create account")
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const form = useForm({
+      defaultValues: {
+        name: "",
+        email: "",
+        password: "",
+      },
+      validators: {
+        onChange: authSignupSchema,
+      },
+      onSubmit: async ({ value }) => {
+        try {
+          setErrorMessage(null);
+  
+          const { error } = await authClient.signUp.email({ name: value.name, email: value.email, password: value.password });
+  
+          if (error) {
+            setErrorMessage(error.message ?? "Failed to create account");
+            return;
+          }
+  
+          await navigate({ to: authRedirect || "/" });
+  
+        } catch (err) {
+          setErrorMessage(err instanceof Error ? err.message : "Failed to create account");
+        }
+      },
+    });
 
   const handleGoogleSignUp = () => {
     // TODO: Implement Google OAuth
@@ -84,76 +82,113 @@ export function SignUpPage() {
           </div>
 
           {/* Sign Up Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                type="text"
-                autoComplete="name"
-                placeholder="Enter your name"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+          <form 
+            id="signup-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              form.handleSubmit();
+            }}>
+            <FieldGroup className="gap-4">
+              <form.Field name="name" children={(field) => { 
+                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+                return (
+                <Field>
+                  <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                  <Input 
+                    id={field.name} 
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    aria-invalid={isInvalid}
+                    type="text" 
+                    autoComplete="name"
+                    placeholder="Enter your name"
+                  />
+                  {isInvalid && (
+                    <FieldError errors={field.state.meta.errors}/>
+                  )}
+                </Field>
+                )
+              }}
               />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                autoComplete="email"
-                placeholder="Enter your email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+              <form.Field name="email" children={(field) => { 
+                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+                return (
+                <Field>
+                  <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+                  <Input 
+                    id={field.name} 
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    aria-invalid={isInvalid}
+                    type="email" 
+                    autoComplete="email"
+                    placeholder="Enter your email"
+                  />
+                  {isInvalid && (
+                    <FieldError errors={field.state.meta.errors}/>
+                  )}
+                </Field>
+                )
+              }}
               />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
               <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="new-password"
-                  placeholder="Create a password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                <form.Field name="password" children={(field) => { 
+                  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+                  return (
+                  <Field>
+                    <FieldLabel htmlFor={field.name}>Password</FieldLabel>
+                    <div className="relative">
+                      <Input 
+                        id={field.name} 
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        aria-invalid={isInvalid}
+                        type={showPassword ? "text" : "password"}
+                        autoComplete="new-password"
+                        placeholder="Enter a password"
+                      />
+                      <Button
+                        type="button"
+                        className="absolute right-1 top-0 h-full text-muted-foreground hover:bg-transparent cursor-pointer"
+                        onClick={() => setShowPassword(!showPassword)}
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        variant="ghost"
+                        size="icon"
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors}/>
+                    )}
+                  </Field>
+                  )
+                }}
                 />
-                <button
-                  type="button"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
-                  onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
               </div>
-              {/* Password Requirements */}
-              {password && (
-                <ul className="mt-3 space-y-1">
-                  {passwordRequirements.map((req) => (
-                    <li
-                      key={req.label}
-                      className={`flex items-center gap-2 text-xs ${
-                        req.met ? "text-green-600" : "text-muted-foreground"
-                      }`}
-                    >
-                      {req.met ? <Check className="h-3 w-3" /> : <X className="h-3 w-3" />}
-                      {req.label}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            {errorMessage && <p className="text-sm text-destructive">{errorMessage}</p>}
-            
-            <Button type="submit" className="w-full cursor-pointer" disabled={isLoading || !passwordRequirements.every((r) => r.met)}>
-              {isLoading ? "Creating account..." : "Create Account"}
-            </Button>
+            </FieldGroup>
           </form>
+        </CardContent>
+        <CardFooter className="flex flex-col">
+          {errorMessage && <p className="text-sm text-destructive">{errorMessage}</p>}
+          
+          <form.Subscribe
+            selector={(state) => [state.canSubmit, state.isSubmitting]}
+            children={([canSubmit, isSubmitting]) => (
+              <Field orientation="horizontal">
+                <Button type="submit" form="signup-form" className="w-full cursor-pointer mt-2" disabled={isSubmitting || !canSubmit}>
+                  {isSubmitting ? "Creating account..." : "Create Account"}
+                </Button>
+              </Field>
+            )}
+          />
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
             Already have an account?{" "}
@@ -161,7 +196,7 @@ export function SignUpPage() {
               Sign in
             </Link>
           </p>
-        </CardContent>
+        </CardFooter>
       </Card>
 
       <p className="mt-6 text-center text-xs text-muted-foreground max-w-md">
