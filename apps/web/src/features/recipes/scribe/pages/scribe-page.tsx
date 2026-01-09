@@ -77,12 +77,12 @@ export function ScribePage() {
         <div className="flex items-center justify-end gap-3 mb-6">
           <span className="text-sm text-muted-foreground">Units</span>
           <Select value={system as unknown as string} onValueChange={(v) => setSystem(MeasurementSystemSchema.parse(v))}>
-            <SelectTrigger className="w-[100px] cursor-pointer">
+            <SelectTrigger className="w-[100px]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="US" className="cursor-pointer">US</SelectItem>
-              <SelectItem value="METRIC" className="cursor-pointer">Metric</SelectItem>
+              <SelectItem value="US">US</SelectItem>
+              <SelectItem value="METRIC">Metric</SelectItem>
             </SelectContent>
           </Select>
         </div>

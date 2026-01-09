@@ -70,7 +70,7 @@ export default function ResetPasswordPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button className="w-full cursor-pointer" onClick={() => navigate({ to: "/auth/signin" })}>
+            <Button className="w-full" onClick={() => navigate({ to: "/auth/signin" })}>
               Continue to sign in
             </Button>
           </CardContent>
@@ -102,7 +102,7 @@ export default function ResetPasswordPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button className="w-full cursor-pointer" onClick={() => navigate({ to: "/auth/signin" })}>
+            <Button className="w-full" onClick={() => navigate({ to: "/auth/signin" })}>
               Continue to sign in
             </Button>
           </CardContent>
@@ -154,7 +154,7 @@ export default function ResetPasswordPage() {
                       />
                       <Button
                         type="button"
-                        className="absolute right-1 top-0 h-full text-muted-foreground hover:bg-transparent cursor-pointer"
+                        className="absolute right-1 top-0 h-full text-muted-foreground hover:bg-transparent"
                         onClick={() => setShowPassword(!showPassword)}
                         aria-label={showPassword ? "Hide password" : "Show password"}
                         variant="ghost"
@@ -191,7 +191,7 @@ export default function ResetPasswordPage() {
                       />
                       <Button
                         type="button"
-                        className="absolute right-1 top-0 h-full text-muted-foreground hover:bg-transparent cursor-pointer"
+                        className="absolute right-1 top-0 h-full text-muted-foreground hover:bg-transparent"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                         aria-label={showPassword ? "Hide password" : "Show password"}
                         variant="ghost"
@@ -218,7 +218,7 @@ export default function ResetPasswordPage() {
             selector={(state) => [state.canSubmit, state.isSubmitting]}
             children={([canSubmit, isSubmitting]) => (
               <Field orientation="horizontal">
-                <Button type="submit" form="reset-password-form" className="w-full cursor-pointer mt-2" disabled={isSubmitting || !canSubmit}>
+                <Button type="submit" form="reset-password-form" className="w-full mt-2" disabled={isSubmitting || !canSubmit}>
                   {isSubmitting ? "Resetting..." : "Reset password"}
                 </Button>
               </Field>

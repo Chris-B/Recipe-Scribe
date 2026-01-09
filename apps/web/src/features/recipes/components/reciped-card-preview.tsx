@@ -13,7 +13,7 @@ interface RecipeCardPreviewProps {
 
 export function RecipeCardPreview({ title, description, image, time, servings, tags }: RecipeCardPreviewProps) {
   return (
-    <Card className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow">
+    <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
       <div className="aspect-[4/3] overflow-hidden">
         <img
           src={image || "/placeholder.svg"}

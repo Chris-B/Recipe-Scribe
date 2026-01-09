@@ -15,7 +15,7 @@ export default async function buildApp() {
 async function registerCors(app: FastifyInstance) {
   app.register(cors, {
     origin: process.env.CORS_ORIGIN || "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
     credentials: true,
     maxAge: 86400,
