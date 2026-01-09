@@ -69,7 +69,7 @@ export function SignUpPage() {
         </CardHeader>
         <CardContent>
           {/* Google Sign Up */}
-          <Button variant="outline" className="w-full bg-transparent cursor-pointer" onClick={handleGoogleSignUp} type="button">
+          <Button variant="outline" className="w-full bg-transparent" onClick={handleGoogleSignUp} type="button">
             <GoogleIcon />
             Continue with Google
           </Button>
@@ -156,7 +156,7 @@ export function SignUpPage() {
                       />
                       <Button
                         type="button"
-                        className="absolute right-1 top-0 h-full text-muted-foreground hover:bg-transparent cursor-pointer"
+                        className="absolute right-1 top-0 h-full text-muted-foreground hover:bg-transparent"
                         onClick={() => setShowPassword(!showPassword)}
                         aria-label={showPassword ? "Hide password" : "Show password"}
                         variant="ghost"
@@ -183,7 +183,7 @@ export function SignUpPage() {
             selector={(state) => [state.canSubmit, state.isSubmitting]}
             children={([canSubmit, isSubmitting]) => (
               <Field orientation="horizontal">
-                <Button type="submit" form="signup-form" className="w-full cursor-pointer mt-2" disabled={isSubmitting || !canSubmit}>
+                <Button type="submit" form="signup-form" className="w-full mt-2" disabled={isSubmitting || !canSubmit}>
                   {isSubmitting ? "Creating account..." : "Create Account"}
                 </Button>
               </Field>

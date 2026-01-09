@@ -116,7 +116,7 @@ export function HomePage() {
               ))}
             </div>
             <div className="mt-12 text-center">
-              <Button variant="outline" size="lg" className="cursor-pointer">
+              <Button variant="outline" size="lg">
                 View All Recipes
               </Button>
             </div>

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UserPreferencesRouteImport } from './routes/user/preferences'
 import { Route as RecipesScribeRouteImport } from './routes/recipes/scribe'
 import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as AuthSigninRouteImport } from './routes/auth/signin'
@@ -19,6 +20,11 @@ import { Route as AuthForgotpasswordRouteImport } from './routes/auth/forgotpass
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UserPreferencesRoute = UserPreferencesRouteImport.update({
+  id: '/user/preferences',
+  path: '/user/preferences',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecipesScribeRoute = RecipesScribeRouteImport.update({
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/auth/signin': typeof AuthSigninRoute
   '/auth/signup': typeof AuthSignupRoute
   '/recipes/scribe': typeof RecipesScribeRoute
+  '/user/preferences': typeof UserPreferencesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/auth/signin': typeof AuthSigninRoute
   '/auth/signup': typeof AuthSignupRoute
   '/recipes/scribe': typeof RecipesScribeRoute
+  '/user/preferences': typeof UserPreferencesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,6 +79,7 @@ export interface FileRoutesById {
   '/auth/signin': typeof AuthSigninRoute
   '/auth/signup': typeof AuthSignupRoute
   '/recipes/scribe': typeof RecipesScribeRoute
+  '/user/preferences': typeof UserPreferencesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,6 +90,7 @@ export interface FileRouteTypes {
     | '/auth/signin'
     | '/auth/signup'
     | '/recipes/scribe'
+    | '/user/preferences'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,6 +99,7 @@ export interface FileRouteTypes {
     | '/auth/signin'
     | '/auth/signup'
     | '/recipes/scribe'
+    | '/user/preferences'
   id:
     | '__root__'
     | '/'
@@ -97,6 +108,7 @@ export interface FileRouteTypes {
     | '/auth/signin'
     | '/auth/signup'
     | '/recipes/scribe'
+    | '/user/preferences'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,6 +118,7 @@ export interface RootRouteChildren {
   AuthSigninRoute: typeof AuthSigninRoute
   AuthSignupRoute: typeof AuthSignupRoute
   RecipesScribeRoute: typeof RecipesScribeRoute
+  UserPreferencesRoute: typeof UserPreferencesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -115,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/user/preferences': {
+      id: '/user/preferences'
+      path: '/user/preferences'
+      fullPath: '/user/preferences'
+      preLoaderRoute: typeof UserPreferencesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recipes/scribe': {
@@ -162,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthSigninRoute: AuthSigninRoute,
   AuthSignupRoute: AuthSignupRoute,
   RecipesScribeRoute: RecipesScribeRoute,
+  UserPreferencesRoute: UserPreferencesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -69,7 +69,7 @@ export function ForgotPasswordPage() {
               </p>
               <Button
                 variant="outline"
-                className="w-full bg-transparent cursor-pointer"
+                className="w-full bg-transparent"
                 onClick={() => {
                   setSubmittedEmail(null)
                   form.reset()
@@ -82,7 +82,7 @@ export function ForgotPasswordPage() {
                 <Button
                   type="button"
                   variant="link"
-                  className="text-primary hover:underline font-medium cursor-pointer"
+                  className="text-primary hover:underline font-medium"
                   onClick={() => {
                     form.handleSubmit();
                   }}
@@ -134,7 +134,7 @@ export function ForgotPasswordPage() {
             selector={(state) => [state.canSubmit, state.isSubmitting, state.isSubmitted]}
             children={([canSubmit, isSubmitting, isSubmitted]) => (
               <Field orientation="horizontal">
-                <Button type="submit" form="forgot-password-form" className="w-full cursor-pointer mt-2" disabled={isSubmitting || !canSubmit} hidden={isSubmitted}>
+                <Button type="submit" form="forgot-password-form" className="w-full mt-2" disabled={isSubmitting || !canSubmit} hidden={isSubmitted}>
                   {isSubmitting ? "Sending..." : "Send reset link"}
                 </Button>
               </Field>

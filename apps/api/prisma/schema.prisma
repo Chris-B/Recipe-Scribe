@@ -17,6 +17,7 @@ model User {
   updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
+  preferences   UserPreferences?
 
   @@unique([email])
   @@map("user")
@@ -65,4 +66,24 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+model UserPreferences {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  scribe        Json?
+  dietary       Json?
+  discovery     Json?
+  library       Json?
+  social        Json?
+  cooking       Json?
+  notifications Json?
+  privacy       Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_preferences")
 }
