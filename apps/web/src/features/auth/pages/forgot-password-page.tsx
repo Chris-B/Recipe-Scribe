@@ -43,7 +43,7 @@ export function ForgotPasswordPage() {
     });
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
       {/* Logo */}
       <Logo className="mb-8" />
 
@@ -79,15 +79,16 @@ export function ForgotPasswordPage() {
               </Button>
               <p className="text-center text-sm text-muted-foreground">
                 Didn't receive the email?{" "}
-                <button
+                <Button
                   type="button"
+                  variant="link"
                   className="text-primary hover:underline font-medium cursor-pointer"
                   onClick={() => {
                     form.handleSubmit();
                   }}
                 >
                   Click to resend
-                </button>
+                </Button>
               </p>
             </div>
           ) : (

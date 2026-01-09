@@ -90,13 +90,14 @@ export function SiteHeader() {
         </div>
 
         {/* Mobile Menu Button */}
-        <button
-          className="md:hidden p-2 text-foreground"
+        <Button
+          variant="ghost"
+          className="md:hidden p-2 text-foreground cursor-pointer"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
         >
           {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        </Button>
       </div>
 
       {/* Mobile Menu */}
@@ -147,7 +148,7 @@ export function SiteHeader() {
                     <p className="text-sm font-medium text-foreground">{session.user.name || "Signed in"}</p>
                     <p className="text-xs text-muted-foreground">{session.user.email}</p>
                   </div>
-                  <Button variant="ghost" className="w-full justify-center" onClick={handleSignOut} disabled={isSigningOut}>
+                  <Button variant="ghost" className="w-full justify-center cursor-pointer" onClick={handleSignOut} disabled={isSigningOut}>
                     {isSigningOut ? "Signing out..." : "Sign Out"}
                   </Button>
                 </>
